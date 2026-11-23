@@ -1,5 +1,7 @@
 # Corner Shop
 
+By [Kayam](https://kayam.ai).
+
 Ten small-business environments where an AI agent runs a shop for 13 simulated weeks, scored by a **going-concern reward** that resists the usual end-of-episode cheats.
 
 Most business simulations score cash on the last day. Agents learn to game that: they stop paying suppliers, stop restocking, draw the credit line and fire-sell stock. The going-concern reward instead **freezes the firm at the end, keeps running it with scripted operators, and values what's left**. A firm stripped for cash scores badly.
@@ -37,7 +39,7 @@ print(going_concern(env.sim), cash_reward(env.sim))
 - **Deterministic:** the same firm and actions always give the same history.
 
 ## What's not included
-The firm generator, the harder tiers (2 and 3), and the hack ledger regression suite are part of the full Going Concern packs.
+The firm generator, the harder tiers (2 and 3), and the hack ledger regression suite are part of the full Kayam packs.
 
 ## License
 Apache-2.0. See `LICENSE`.
