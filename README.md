@@ -6,11 +6,11 @@ Ten small-business environments where an AI agent runs a shop for 13 simulated w
 
 Most business simulations score cash on the last day. Agents learn to game that: they stop paying suppliers, stop restocking, draw the credit line and fire-sell stock. The going-concern reward instead **freezes the firm at the end, keeps running it with scripted operators, and values what's left**. A firm stripped for cash scores badly.
 
-In our experiments, the same honest starting model (Qwen3-1.7B) was RL-trained on each reward, then evaluated on unseen firms:
-- the **cash-trained** models learned to stop paying suppliers (74% of firms), and firm value fell by $5.8k;
-- the **going-concern-trained** models improved the business (+$3.1k) and kept restocking.
+In our experiments, the same starting model (Qwen3-1.7B, warm-started on an honest operator) was RL-trained with GRPO on each reward, then evaluated on 60 unseen firms (3 training seeds per reward, 180 episodes each):
+- the **cash-trained** models ran the shop down at the end: they stopped restocking in 42% of episodes (12–97% across seeds) and often stopped paying suppliers. They doubled last-day cash but ended with a lower going-concern value than they started with;
+- the **going-concern-trained** models kept restocking (2% stopped) and ended with a higher going-concern value: +$8.9k vs the cash-trained models (every seed ahead), and +$3.0k over the starting model.
 
-(3 seeds per reward, 60 held-out firms. This is a small model with short training runs, validated against the simulator rather than real businesses.)
+(Engine 0.2. A small model with short training runs, validated against the simulator rather than real businesses. More at [kayam.ai](https://kayam.ai).)
 
 ![Held-out result](docs/heldout_result.png)
 
