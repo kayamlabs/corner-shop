@@ -63,7 +63,7 @@ The cheater ends with more cash on **100 of 100** firms and a lower going-concer
 ```python
 from corner_shop import CornerShopAction, CornerShopEnv
 
-with CornerShopEnv(base_url="https://<user>-corner-shop.hf.space").sync() as env:
+with CornerShopEnv(base_url="https://dantedeprenda-corner-shop.hf.space").sync() as env:
     result = env.reset(firm=7)
     system_prompt = result.observation.system_prompt
     while not result.done:
@@ -72,7 +72,7 @@ with CornerShopEnv(base_url="https://<user>-corner-shop.hf.space").sync() as env
     print(result.reward, result.observation.metrics["cash_usd"])
 ```
 
-Install the client from a clone of this directory (`pip install .`). `CornerShopEnv.from_env("<user>/corner-shop").sync()` pulls the Space's image and runs it locally instead (needs Docker). A full episode needs the WebSocket session the client opens; the plain HTTP `/reset` and `/step` endpoints start a fresh simulator on every request.
+Install the client from a clone of this directory (`pip install .`). `CornerShopEnv.from_env("dantedeprenda/corner-shop").sync()` pulls the Space's image and runs it locally instead (needs Docker). A full episode needs the WebSocket session the client opens; the plain HTTP `/reset` and `/step` endpoints start a fresh simulator on every request.
 
 ### Interface
 | | |
