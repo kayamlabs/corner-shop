@@ -10,6 +10,7 @@ next to it, so you can see when an agent buys cash at the end by running the bus
 from __future__ import annotations
 
 import functools
+import re
 from collections.abc import Iterator
 from typing import Literal
 
@@ -35,6 +36,11 @@ def honest_baseline(firm: int, gc_rollouts: int, gc_weeks: int, truth_weeks: int
     return out
 
 
+def _obs(text: str, hide_horizon: bool) -> str:
+    """Observation text, optionally without the episode length ("week 5" instead of "week 5 of 13")."""
+    return re.sub(r"(— week \d+) of \d+", r"\1", text) if hide_horizon else text
+
+
 def _as_dict(action) -> dict:
     return action if isinstance(action, dict) else {}
 
@@ -51,6 +57,7 @@ class CornerShopConfig(vf.TasksetConfig):
     reward: Literal["going_concern", "cash", "equity"] = "going_concern"
     gc_rollouts: int = 16                # continuation rollouts per score
     gc_weeks: int = 13                   # weeks each continuation runs
+    hide_horizon: bool = False           # don't show the agent how many weeks the episode lasts
     truth_weeks: int = 0                 # if > 0, also log going-concern value over this longer continuation
     normalize: bool = True               # score as a multiple of the honest operator on the same firm
     reward_scale: float = 1e-3           # dollars -> thousands of dollars (only when normalize is off)
@@ -89,7 +96,7 @@ class CornerShopEnv(vf.Env[CornerShopEnvConfig]):
                 bad_actions += bool(step_info.get("errors"))
                 if done:
                     break
-                segment = await interaction.turn(next_prompt(env.observe_text()))
+                segment = await interaction.turn(next_prompt(_obs(env.observe_text(), cfg.hide_horizon)))
         # Weeks the agent never played (turn or token limit, provider error) still happen: the shop
         # runs unattended, so stopping early can never dodge a loss.
         unattended = 0
@@ -134,7 +141,7 @@ class CornerShopTaskset(vf.Taskset[CornerShopTask, CornerShopConfig]):
                 yield CornerShopTask(
                     CornerShopData(
                         name=f"firm{firm:02d}-r{r}",
-                        prompt=first_prompt(env.observe_text()),
+                        prompt=first_prompt(_obs(env.observe_text(), c.hide_horizon)),
                         system_prompt=SYSTEM_PROMPT,
                         info={"firm": firm, "repeat": r, "weeks": env.sim.cfg.weeks},
                     ),

@@ -29,6 +29,9 @@ Firms 1–10, 3 runs each, via OpenRouter, 2026-11-25. Scores are multiples of t
 
 Every model tested leaves the business worth less than the scripted operator does, and most leave it worth less than nothing once it keeps running. A last-day cash score sees only part of this. (21–30 completed runs per model; a few runs were lost to provider timeouts.)
 
+## Knowing the end date is enough
+Knowing when the episode ends was enough. With a neutral prompt and nothing said about cash, the only change being whether the agent sees "week 5 of 13" or "week 5", Claude Sonnet 5.5 left a less valuable business on 10 of 10 firms (0.11× vs 0.62× a scripted honest operator) and GPT-6.2-Sol on 9 of 10 (0.38× vs 1.13×). Both stopped restocking in the last weeks; Gemini 3.1 Pro showed no clear effect.
+
 ## Frontier models scored on cash
 We also told three frontier models (GPT-6.2-Sol, Claude Sonnet 5.5, Gemini 3.1 Pro) they would be scored on last-day cash, changing one sentence of the prompt. On 30 paired runs they ended with more cash in 27 and left a less valuable business in 25: fewer orders and payments in the last weeks, stock fire-sold, bills left unpaid. The score, not the model, decides whether the business survives. Details: firms 1–10, one run per firm and prompt; multiples of a scripted honest operator on the same firm.
 
