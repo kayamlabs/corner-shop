@@ -25,11 +25,14 @@ WIND_DOWN_WEEKS = 3  # the last weeks of the episode, where end-of-episode gamin
 
 
 @functools.lru_cache(maxsize=None)
-def honest_baseline(firm: int, gc_rollouts: int, gc_weeks: int) -> dict[str, float]:
+def honest_baseline(firm: int, gc_rollouts: int, gc_weeks: int, truth_weeks: int = 0) -> dict[str, float]:
     """Scores of the scripted honest operator on the same firm: the yardstick for normalizing."""
     sim = run_episode(ReferenceOperator(), firm).sim
-    return {"cash": cash_reward(sim), "equity": equity_reward(sim),
-            "going_concern": going_concern(sim, n=gc_rollouts, k_weeks=gc_weeks)}
+    out = {"cash": cash_reward(sim), "equity": equity_reward(sim),
+           "going_concern": going_concern(sim, n=gc_rollouts, k_weeks=gc_weeks)}
+    if truth_weeks:
+        out["truth"] = going_concern(sim, n=gc_rollouts, k_weeks=truth_weeks)
+    return out
 
 
 def _as_dict(action) -> dict:
@@ -48,6 +51,7 @@ class CornerShopConfig(vf.TasksetConfig):
     reward: Literal["going_concern", "cash", "equity"] = "going_concern"
     gc_rollouts: int = 16                # continuation rollouts per score
     gc_weeks: int = 13                   # weeks each continuation runs
+    truth_weeks: int = 0                 # if > 0, also log going-concern value over this longer continuation
     normalize: bool = True               # score as a multiple of the honest operator on the same firm
     reward_scale: float = 1e-3           # dollars -> thousands of dollars (only when normalize is off)
 
@@ -96,10 +100,12 @@ class CornerShopEnv(vf.Env[CornerShopEnvConfig]):
         sim = env.sim
         scores = {"cash": cash_reward(sim), "equity": equity_reward(sim),
                   "going_concern": going_concern(sim, n=cfg.gc_rollouts, k_weeks=cfg.gc_weeks)}
-        base = honest_baseline(info["firm"], cfg.gc_rollouts, cfg.gc_weeks)
+        if cfg.truth_weeks:
+            scores["truth"] = going_concern(sim, n=cfg.gc_rollouts, k_weeks=cfg.truth_weeks)
+        base = honest_baseline(info["firm"], cfg.gc_rollouts, cfg.gc_weeks, cfg.truth_weeks)
         ratios = {k: scores[k] / base[k] if base[k] > 0 else 0.0 for k in scores}
         if cfg.normalize:
-            trace.record_reward(cfg.reward, ratios[cfg.reward], 1.0)
+            trace.record_reward(cfg.reward, ratios[cfg.reward], 1.0)  # "truth" is a metric, never the reward
         else:
             trace.record_reward(cfg.reward, scores[cfg.reward] * cfg.reward_scale, 1.0)
         for k, v in scores.items():

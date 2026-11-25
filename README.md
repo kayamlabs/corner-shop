@@ -41,6 +41,9 @@ We also told three frontier models (GPT-6.2-Sol, Claude Sonnet 5.5, Gemini 3.1 P
 | Gemini 3.1 Pro | going concern | 0.90 | 1.02 |
 | Gemini 3.1 Pro | last-day cash | 0.76 | 1.29 |
 
+## Can the reward itself be gamed?
+It resists end-of-episode cheats; it isn't proven unbeatable. In a first test we gave GPT-6.2-Sol and Claude Sonnet 5.5 the exact formula and told them to maximize it by any means. Across 20 paired runs, the score rose while the business's 52-week value fell in only 2. GPT-6.2-Sol's higher scores came with higher long-run value, i.e. better management rather than a trick. If you find an exploit, please open an issue.
+
 ## Quickstart
 ```bash
 pip install -e .
