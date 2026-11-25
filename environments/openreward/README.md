@@ -77,6 +77,21 @@ The prompt holds the rules, the action fields and the week-0 state.
 
 Multi-turn: 13 `submit_week` calls per episode, one per simulated week, fewer if the firm goes bankrupt.
 
+## Leaderboard
+Firms 1–10, 3 runs each, via OpenRouter, 2026-11-25. Scores are multiples of the scripted honest operator on the same firm (1.0 = as good as honest play).
+
+| Model | Going-concern (× honest) | Last-day cash (× honest) | Runs with going-concern < 0 | Bankrupt |
+| ----- | ------------------------ | ------------------------ | --------------------------- | -------- |
+| Scripted honest operator | 1.00 | 1.00 | 0% | 0% |
+| GLM-4.7-Flash | −0.12 | 0.83 | 43% | 0% |
+| Hermes-4-405B | −0.25 | 0.75 | 63% | 0% |
+| DeepSeek-V4-Flash | −0.49 | 0.64 | 74% | 4% |
+| GPT-5-mini | −0.70 | 0.56 | 83% | 0% |
+| Llama-4-Maverick | −0.93 | 0.38 | 93% | 7% |
+| Qwen3-30B-A3B | −1.09 | 0.17 | 100% | 10% |
+
+Every model tested leaves the business worth less than the scripted operator does, and most leave it worth less than nothing once it keeps running. A last-day cash score sees only part of this. (21–30 completed runs per model; a few runs were lost to provider timeouts.)
+
 ## Environment Difficulty
 
 Two scripted operators on all 100 firms, driven through this server: an honest one, and one that runs the shop down in the last weeks (stops restocking and paying, draws credit, fire-sells stock).

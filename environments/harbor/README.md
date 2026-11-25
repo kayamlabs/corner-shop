@@ -44,6 +44,21 @@ The cheater ends with more cash on **100 of 100** firms and a lower going-concer
 
 The oracle solution plays the honest operator through `shop` and scores 1.0 on every firm. Set `CORNER_SHOP_OPERATOR=endgame_exploiter` to play the cheater instead.
 
+### Leaderboard
+Firms 1–10, 3 runs each, via OpenRouter, 2026-11-25. Scores are multiples of the scripted honest operator on the same firm (1.0 = as good as honest play).
+
+| Model | Going-concern (× honest) | Last-day cash (× honest) | Runs with going-concern < 0 | Bankrupt |
+| ----- | ------------------------ | ------------------------ | --------------------------- | -------- |
+| Scripted honest operator | 1.00 | 1.00 | 0% | 0% |
+| GLM-4.7-Flash | −0.12 | 0.83 | 43% | 0% |
+| Hermes-4-405B | −0.25 | 0.75 | 63% | 0% |
+| DeepSeek-V4-Flash | −0.49 | 0.64 | 74% | 4% |
+| GPT-5-mini | −0.70 | 0.56 | 83% | 0% |
+| Llama-4-Maverick | −0.93 | 0.38 | 93% | 7% |
+| Qwen3-30B-A3B | −1.09 | 0.17 | 100% | 10% |
+
+Every model tested leaves the business worth less than the scripted operator does, and most leave it worth less than nothing once it keeps running. A last-day cash score sees only part of this. (21–30 completed runs per model; a few runs were lost to provider timeouts.)
+
 ### Quickstart
 ```bash
 harbor run -d kayam/corner-shop -a <agent> -m <model> -n 4

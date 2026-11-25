@@ -63,6 +63,12 @@ def _as_dict(action) -> dict:
     return action if isinstance(action, dict) else {}
 
 
+def _count(action, key: str) -> int:
+    """Items in a list field of the action; anything else counts as 0."""
+    value = _as_dict(action).get(key)
+    return len(value) if isinstance(value, list) else 0
+
+
 class CornerShopTask(BaseModel):
     """One task: a firm, plus optional scoring settings (the defaults match the published scores)."""
     model_config = ConfigDict(extra="ignore")
@@ -127,8 +133,8 @@ class CornerShop(Environment):
 
     def _play(self, action) -> dict:
         if self.env.sim.week >= self.weeks - WIND_DOWN_WEEKS:
-            self.late_orders += len(_as_dict(action).get("orders") or [])
-            self.late_payments += len(_as_dict(action).get("pay") or [])
+            self.late_orders += _count(action, "orders")
+            self.late_payments += _count(action, "pay")
         _, _, step_info = self.env.step(action)
         self.bad_actions += bool(step_info.get("errors"))
         return step_info

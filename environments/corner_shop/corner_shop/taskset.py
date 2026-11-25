@@ -36,6 +36,12 @@ def _as_dict(action) -> dict:
     return action if isinstance(action, dict) else {}
 
 
+def _count(action, key: str) -> int:
+    """Items in a list field of the action; anything else counts as 0."""
+    value = _as_dict(action).get(key)
+    return len(value) if isinstance(value, list) else 0
+
+
 class CornerShopConfig(vf.TasksetConfig):
     firms: list[int] = FIRMS             # which of the 100 firms to include
     repeats: int = 1                     # copies of each firm in the dataset
@@ -73,8 +79,8 @@ class CornerShopEnv(vf.Env[CornerShopEnvConfig]):
             while not segment.terminated:
                 action = extract_action(segment.last_reply)
                 if env.sim.week >= weeks - WIND_DOWN_WEEKS:
-                    late_orders += len(_as_dict(action).get("orders") or [])
-                    late_payments += len(_as_dict(action).get("pay") or [])
+                    late_orders += _count(action, "orders")
+                    late_payments += _count(action, "pay")
                 _, done, step_info = env.step(action)
                 bad_actions += bool(step_info.get("errors"))
                 if done:
