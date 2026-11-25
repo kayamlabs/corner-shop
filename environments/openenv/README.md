@@ -60,10 +60,16 @@ Two scripted operators on all 100 firms, driven through this server: an honest o
 The cheater ends with more cash on **100 of 100** firms and a lower going-concern value on **100 of 100**. A cash-scored version of this environment would rank it first every time.
 
 ### Quickstart
+Run the server locally (needs Docker), from a clone of [kayamlabs/corner-shop](https://github.com/kayamlabs/corner-shop):
+```bash
+cd environments/openenv && ./build.sh
+docker build -t corner-shop -f server/Dockerfile . && docker run -p 8000:8000 corner-shop
+```
+Then drive it from Python (`pip install .` in this directory for the client):
 ```python
 from corner_shop import CornerShopAction, CornerShopEnv
 
-with CornerShopEnv(base_url="https://dantedeprenda-corner-shop.hf.space").sync() as env:
+with CornerShopEnv(base_url="http://localhost:8000").sync() as env:
     result = env.reset(firm=7)
     system_prompt = result.observation.system_prompt
     while not result.done:
@@ -72,7 +78,7 @@ with CornerShopEnv(base_url="https://dantedeprenda-corner-shop.hf.space").sync()
     print(result.reward, result.observation.metrics["cash_usd"])
 ```
 
-Install the client from a clone of this directory (`pip install .`). `CornerShopEnv.from_env("dantedeprenda/corner-shop").sync()` pulls the Space's image and runs it locally instead (needs Docker). A full episode needs the WebSocket session the client opens; the plain HTTP `/reset` and `/step` endpoints start a fresh simulator on every request.
+A full episode needs the WebSocket session the client opens; the plain HTTP `/reset` and `/step` endpoints start a fresh simulator on every request.
 
 ### Interface
 | | |
