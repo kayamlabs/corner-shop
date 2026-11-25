@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+corner_shop/going_concern/
+corner_shop/firms/

@@ -99,7 +99,7 @@ __all__ = ["GoingConcernEnv", "run_episode", "snapshot", "d"]
 
 
 def load_firm(i: int) -> FirmConfig:
-    """One of the 10 Corner Shop firms (1..10)."""
+    """One of the 100 Corner Shop firms (1..100)."""
     import os
     path = os.path.join(os.path.dirname(__file__), "..", "firms", f"corner_shop_{i:02d}.json")
     return FirmConfig.from_json(open(path).read())

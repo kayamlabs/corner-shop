@@ -1,7 +1,7 @@
 [project]
 name = "corner-shop"
 version = "0.1.0"
-description = "Corner Shop: 10 small-business environments for AI agents, with a going-concern reward that resists cheating."
+description = "Corner Shop: 100 small-business environments for AI agents, with a going-concern reward that resists cheating."
 requires-python = ">=3.10"
 dependencies = []
 

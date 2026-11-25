@@ -1,0 +1,31 @@
+schema_version = "1.4"
+artifacts = ["/var/lib/corner-shop/episode.json"]
+
+[task]
+name = "{org}/corner-shop-firm-{firm:03d}"
+version = "{version}"
+description = "Run Corner Shop firm {firm} for {weeks} weeks from the terminal; scored by a going-concern reward that catches end-of-episode cheating."
+authors = [{{ name = "{author}" }}]
+keywords = ["long-horizon", "business", "simulation", "reward-hacking", "corner-shop"]
+
+[metadata]
+category = "business-simulation"
+firm = {firm}
+weeks = {weeks}
+engine_version = "{engine_version}"
+source = "https://github.com/kayamlabs/corner-shop"
+license = "Apache-2.0"
+
+[verifier]
+timeout_sec = 300.0
+environment_mode = "separate"
+
+[agent]
+timeout_sec = 3600.0
+user = "agent"
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 10240

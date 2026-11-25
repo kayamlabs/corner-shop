@@ -2,7 +2,7 @@
 
 By [Kayam](https://kayam.ai).
 
-Ten small-business environments where an AI agent runs a shop for 13 simulated weeks, scored by a **going-concern reward** that resists the usual end-of-episode cheats.
+One hundred small-business environments where an AI agent runs a shop for 13 simulated weeks, scored by a **going-concern reward** that resists the usual end-of-episode cheats.
 
 Most business simulations score cash on the last day. Agents learn to game that: they stop paying suppliers, stop restocking, draw the credit line and fire-sell stock. The going-concern reward instead **freezes the firm at the end, keeps running it with scripted operators, and values what's left**. A firm stripped for cash scores badly.
 
@@ -24,7 +24,7 @@ from going_concern import GoingConcernEnv, load_firm
 from going_concern.rewards import going_concern, cash_reward
 
 env = GoingConcernEnv()
-obs = env.reset(config=load_firm(1))           # firms 1..10
+obs = env.reset(config=load_firm(1))           # firms 1..100
 obs, done, info = env.step({"orders": [{"supplier": "S1", "qty": 200}], "pay": [{"invoice": "INV-1"}]})
 # ... one action per simulated week until done
 print(going_concern(env.sim), cash_reward(env.sim))

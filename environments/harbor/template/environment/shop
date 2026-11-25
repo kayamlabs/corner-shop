@@ -1,0 +1,7 @@
+#!/bin/sh
+# Corner Shop: run `shop help` for the commands.
+[ "$#" -eq 0 ] && set -- help
+if [ "$(id -u)" = "0" ]; then
+  exec /usr/local/bin/python3 -I /opt/corner-shop/shop_core.py "$@"
+fi
+exec sudo -n /usr/local/bin/python3 -I /opt/corner-shop/shop_core.py "$@"

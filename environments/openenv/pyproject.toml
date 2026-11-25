@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openenv-corner-shop"
+version = "0.1.0"
+description = "Run a small shop for 13 weeks, scored by a going-concern reward that catches end-of-episode cheating."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dependencies = [
+    "openenv-core[core]>=0.3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[project.urls]
+Source = "https://github.com/kayamlabs/corner-shop"
+
+[project.scripts]
+# Server entry point: uv run --project . server
+server = "corner_shop.server.app:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["corner_shop", "corner_shop.server", "corner_shop.server.going_concern"]
+package-dir = { "corner_shop" = ".", "corner_shop.server" = "server", "corner_shop.server.going_concern" = "server/going_concern" }
+
+[tool.setuptools.package-data]
+"corner_shop.server" = ["firms/*.json"]
