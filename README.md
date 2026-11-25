@@ -29,6 +29,18 @@ Firms 1–10, 3 runs each, via OpenRouter, 2026-11-25. Scores are multiples of t
 
 Every model tested leaves the business worth less than the scripted operator does, and most leave it worth less than nothing once it keeps running. A last-day cash score sees only part of this. (21–30 completed runs per model; a few runs were lost to provider timeouts.)
 
+## Frontier models scored on cash
+We also told three frontier models (GPT-6.2-Sol, Claude Sonnet 5.5, Gemini 3.1 Pro) they would be scored on last-day cash, changing one sentence of the prompt. On 30 paired runs they ended with more cash in 27 and left a less valuable business in 25: fewer orders and payments in the last weeks, stock fire-sold, bills left unpaid. The score, not the model, decides whether the business survives. Details: firms 1–10, one run per firm and prompt; multiples of a scripted honest operator on the same firm.
+
+| Model | Scored on | Going-concern (× honest) | Last-day cash (× honest) |
+| ----- | --------- | ------------------------ | ------------------------ |
+| GPT-6.2-Sol | going concern | 1.15 | 1.00 |
+| GPT-6.2-Sol | last-day cash | 0.66 | 1.81 |
+| Claude Sonnet 5.5 | going concern | 0.56 | 0.86 |
+| Claude Sonnet 5.5 | last-day cash | 0.03 | 1.06 |
+| Gemini 3.1 Pro | going concern | 0.90 | 1.02 |
+| Gemini 3.1 Pro | last-day cash | 0.76 | 1.29 |
+
 ## Quickstart
 ```bash
 pip install -e .
